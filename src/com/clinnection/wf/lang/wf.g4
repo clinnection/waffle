@@ -28,11 +28,8 @@ decimalExpr
     | op='(' decimalExpr ')'                                           # unaryDecimalExpr
     | decimalExpr op=('*' | '/' | '%' ) decimalExpr                    # binaryDecimalExpr
     | decimalExpr op=('+' | '-' ) decimalExpr                          # binaryDecimalExpr
-
-    | decimalExpr op=('*' | '/' | '%' ) integerExpr                    # binaryDecimalExprA
-    | integerExpr op=('+' | '-' ) decimalExpr                          # binaryDecimalExprB
-
     | DECIMAL                                                          # literalDecimalExpr
+    | INTEGER                                                          # literalIntDecimalExpr
     ;
 
 BOOLEAN
