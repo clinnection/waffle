@@ -3,3 +3,4 @@ gen/
 out/
 wfe.iml
 target/
+*.tokens

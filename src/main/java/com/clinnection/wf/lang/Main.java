@@ -16,15 +16,15 @@ public class Main {
         System.out.println("Hello, world!\n");
 
         CharStream cs = fromFileName("program.txt");
-        wfLexer lexer = new wfLexer(cs);
+        WfLexer lexer = new WfLexer(cs);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
-        wfParser parser = new wfParser(tokens);
+        WfParser parser = new WfParser(tokens);
 
         ParseTree tree = parser.program(); // parse the content and get the tree
-        wfListener listener = new WfBuilder();
+        WfParserListener listener = new WfBuilder();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,tree);
+        walker.walk(listener, tree);
     }
 }
