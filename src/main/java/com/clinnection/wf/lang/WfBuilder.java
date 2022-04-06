@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang;
 
 import com.clinnection.wf.lang.expr.*;
+import com.clinnection.wf.parser.*;
 
 import java.util.Stack;
 
@@ -89,14 +90,14 @@ public class WfBuilder extends wfBaseListener {
         exprs.push(decimalBinaryExpr);
     }
 
-    @Override
-    public void exitIntegerDecimalExpr(wfParser.IntegerDecimalExprContext ctx) {
-        super.exitIntegerDecimalExpr(ctx);
-        System.out.println("exitIntegerDecimalExpr: " + ctx.getText().toString());
-
-        Expr rhs = exprs.pop();
-
-        IntegerDecimalExpr integerDecimalExpr = new IntegerDecimalExpr("#", rhs);
-        exprs.push(integerDecimalExpr);
-    }
+//    @Override
+//    public void exitIntegerDecimalExpr(wfParser.IntegerDecimalExprContext ctx) {
+//        super.exitIntegerDecimalExpr(ctx);
+//        System.out.println("exitIntegerDecimalExpr: " + ctx.getText().toString());
+//
+//        Expr rhs = exprs.pop();
+//
+//        IntegerDecimalExpr integerDecimalExpr = new IntegerDecimalExpr("#", rhs);
+//        exprs.push(integerDecimalExpr);
+//    }
 }
