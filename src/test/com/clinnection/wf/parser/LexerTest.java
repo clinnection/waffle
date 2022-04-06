@@ -10,7 +10,7 @@ import static com.clinnection.wf.parser.WfLexer.*;
 public class LexerTest {
 
   @Test
-  public void test() {
+  public void equalsTest() {
     assertThat("==", producesToken(EQUALS));
   }
 }

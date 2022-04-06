@@ -8,7 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ParserTest {
 
   @Test
-  public void test() {
+  public void integerExprTest() {
     assertThat("1 * 2", usesAllTokens("integerExpr"));
   }
 }
