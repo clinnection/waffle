@@ -3,15 +3,26 @@ parser grammar WfParser;
 options {
   tokenVocab=WfLexer;
 }
-
 program
     : block EOF
     ;
 
 block
-//    : decl* stmt*
-    : integerExpr
-    | decimalExpr
+    : decl* stmt*
+    ;
+
+stmt
+    : assignment_stmt
+    ;
+
+decl
+    : DECLARE decl_var=IDENTIFIER decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING )
+    ;
+
+
+assignment_stmt
+    : IDENTIFIER ASSIGN decimalExpr                          # varAssignStmt
+//    | json_identifier ':=' expr                          # jsonAssignStmt
     ;
 
 compareExpr
@@ -33,8 +44,8 @@ decimalExpr
     | decimalExpr op=(MULT | DIV | MOD) decimalExpr                    # binaryDecimalExpr
     | decimalExpr op=(ADD | MINUS) decimalExpr                         # binaryDecimalExpr
 
-    | decimalExpr op=(MULT | DIV | MOD) integerExpr                    # binaryDecimalExprA
-    | integerExpr op=(ADD | MINUS) decimalExpr                         # binaryDecimalExprB
+    | arg=DECIMAL                                                      # literalDecimalExpr
+    | arg=INTEGER                                                      # literalDecimalExpr
 
-    | DECIMAL                                                          # literalDecimalExpr
+    | IDENTIFIER                                                       # varDecimalExpr
     ;

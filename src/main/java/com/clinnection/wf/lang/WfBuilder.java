@@ -3,9 +3,18 @@ package com.clinnection.wf.lang;
 import com.clinnection.wf.lang.expr.*;
 import com.clinnection.wf.parser.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class WfBuilder extends WfParserBaseListener {
+
+    static final Map<String, DataType> dataTypeMap = new HashMap(Map.of(
+            "boolean", DataType.Boolean,
+            "integer", DataType.Integer,
+            "decimal", DataType.Decimal,
+            "string", DataType.String
+    ));
 
     private Stack<Expr>  exprs;
 
@@ -49,12 +58,27 @@ public class WfBuilder extends WfParserBaseListener {
     }
 
 
+    /*
+        Decimal
+     */
     @Override
     public void exitLiteralDecimalExpr(WfParser.LiteralDecimalExprContext ctx) {
         System.out.println("exitLiteralDecimalExpr: " + ctx.getText());
+//        System.out.println("getType: " + ctx.arg.getType());
 
-        DecimalLiteralExpr integerLiteralExpr = new DecimalLiteralExpr(ctx.getText());
-        exprs.push(integerLiteralExpr);
+        DecimalLiteralExpr decimalLiteralExpr;
+
+        switch (ctx.arg.getType()) {
+            case WfLexer.INTEGER:
+            case WfLexer.DECIMAL:
+//                System.out.println("WfLexer.DECIMAL");
+//                System.out.println("WfLexer.INTEGER");
+                decimalLiteralExpr = new DecimalLiteralExpr(ctx.getText());
+                break;
+            default:
+                throw new RuntimeException("Invalid type in double expression");
+        }
+        exprs.push(decimalLiteralExpr);
     }
 
     @Override
@@ -84,14 +108,5 @@ public class WfBuilder extends WfParserBaseListener {
         exprs.push(decimalBinaryExpr);
     }
 
-    //    @Override
-    //    public void exitIntegerDecimalExpr(wfParser.IntegerDecimalExprContext ctx) {
-    //        super.exitIntegerDecimalExpr(ctx);
-    //        System.out.println("exitIntegerDecimalExpr: " + ctx.getText().toString());
-    //
-    //        Expr rhs = exprs.pop();
-    //
-    //        IntegerDecimalExpr integerDecimalExpr = new IntegerDecimalExpr("#", rhs);
-    //        exprs.push(integerDecimalExpr);
-    //    }
+
 }

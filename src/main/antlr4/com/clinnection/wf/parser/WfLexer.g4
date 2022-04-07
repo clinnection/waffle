@@ -1,5 +1,13 @@
 lexer grammar WfLexer;
 
+DECLARE  : 'declare' ;
+
+DECL_BOOLEAN : 'boolean' ;
+DECL_INTEGER : 'integer' ;
+DECL_DECIMAL : 'decimal' ;
+DECL_STRING : 'string' ;
+
+ASSIGN : ':=';
 EQUALS : '==';
 MINUS  : '-';
 ADD    : '+';
