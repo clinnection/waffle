@@ -1,10 +1,11 @@
 package com.clinnection.wf.lang;
 
 import com.clinnection.wf.lang.expr.*;
+import com.clinnection.wf.parser.*;
 
 import java.util.Stack;
 
-public class WfBuilder extends wfBaseListener {
+public class WfBuilder extends WfParserBaseListener {
 
     private Stack<Expr>  exprs;
 
@@ -13,8 +14,7 @@ public class WfBuilder extends wfBaseListener {
     }
 
     @Override
-    public void exitLiteralIntegerExpr(wfParser.LiteralIntegerExprContext ctx) {
-        super.exitLiteralIntegerExpr(ctx);
+    public void exitLiteralIntegerExpr(WfParser.LiteralIntegerExprContext ctx) {
         System.out.println("exitLiteralIntegerExpr: " + ctx.getText().toString());
 
         IntegerLiteralExpr integerLiteralExpr = new IntegerLiteralExpr(ctx.getText().toString());
@@ -22,8 +22,7 @@ public class WfBuilder extends wfBaseListener {
     }
 
     @Override
-    public void exitUnaryIntegerExpr(wfParser.UnaryIntegerExprContext ctx) {
-        super.exitUnaryIntegerExpr(ctx);
+    public void exitUnaryIntegerExpr(WfParser.UnaryIntegerExprContext ctx) {
         System.out.println("exitUnaryIntegerExpr: " + ctx.getText().toString());
 
         String op = ctx.op.getText().toString();
@@ -36,8 +35,7 @@ public class WfBuilder extends wfBaseListener {
     }
 
     @Override
-    public void exitBinaryIntegerExpr(wfParser.BinaryIntegerExprContext ctx) {
-        super.exitBinaryIntegerExpr(ctx);
+    public void exitBinaryIntegerExpr(WfParser.BinaryIntegerExprContext ctx) {
         System.out.println("exitBinaryIntegerExpr: " + ctx.getText().toString());
 
         String op = ctx.op.getText().toString();
@@ -52,18 +50,16 @@ public class WfBuilder extends wfBaseListener {
 
 
     @Override
-    public void exitLiteralDecimalExpr(wfParser.LiteralDecimalExprContext ctx) {
-        super.exitLiteralDecimalExpr(ctx);
-        System.out.println("exitLiteralDecimalExpr: " + ctx.getText().toString());
+    public void exitLiteralDecimalExpr(WfParser.LiteralDecimalExprContext ctx) {
+        System.out.println("exitLiteralDecimalExpr: " + ctx.getText());
 
-        DecimalLiteralExpr integerLiteralExpr = new DecimalLiteralExpr(ctx.getText().toString());
+        DecimalLiteralExpr integerLiteralExpr = new DecimalLiteralExpr(ctx.getText());
         exprs.push(integerLiteralExpr);
     }
 
     @Override
-    public void exitUnaryDecimalExpr(wfParser.UnaryDecimalExprContext ctx) {
-        super.exitUnaryDecimalExpr(ctx);
-        System.out.println("exitUnaryDecimalExpr: " + ctx.getText().toString());
+    public void exitUnaryDecimalExpr(WfParser.UnaryDecimalExprContext ctx) {
+        System.out.println("exitUnaryDecimalExpr: " + ctx.getText());
 
         String op = ctx.op.getText().toString();
         System.out.println("op: " + op);
@@ -75,11 +71,10 @@ public class WfBuilder extends wfBaseListener {
     }
 
     @Override
-    public void exitBinaryDecimalExpr(wfParser.BinaryDecimalExprContext ctx) {
-        super.exitBinaryDecimalExpr(ctx);
-        System.out.println("exitBinaryDecimalExpr: " + ctx.getText().toString());
+    public void exitBinaryDecimalExpr(WfParser.BinaryDecimalExprContext ctx) {
+        System.out.println("exitBinaryDecimalExpr: " + ctx.getText());
 
-        String op = ctx.op.getText().toString();
+        String op = ctx.op.getText();
         System.out.println("op: " + op);
 
         Expr rhs = exprs.pop();
@@ -89,14 +84,14 @@ public class WfBuilder extends wfBaseListener {
         exprs.push(decimalBinaryExpr);
     }
 
-    @Override
-    public void exitIntegerDecimalExpr(wfParser.IntegerDecimalExprContext ctx) {
-        super.exitIntegerDecimalExpr(ctx);
-        System.out.println("exitIntegerDecimalExpr: " + ctx.getText().toString());
-
-        Expr rhs = exprs.pop();
-
-        IntegerDecimalExpr integerDecimalExpr = new IntegerDecimalExpr("#", rhs);
-        exprs.push(integerDecimalExpr);
-    }
+    //    @Override
+    //    public void exitIntegerDecimalExpr(wfParser.IntegerDecimalExprContext ctx) {
+    //        super.exitIntegerDecimalExpr(ctx);
+    //        System.out.println("exitIntegerDecimalExpr: " + ctx.getText().toString());
+    //
+    //        Expr rhs = exprs.pop();
+    //
+    //        IntegerDecimalExpr integerDecimalExpr = new IntegerDecimalExpr("#", rhs);
+    //        exprs.push(integerDecimalExpr);
+    //    }
 }
