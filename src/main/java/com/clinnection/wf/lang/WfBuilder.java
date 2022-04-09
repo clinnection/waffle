@@ -152,10 +152,8 @@ public class WfBuilder extends WfParserBaseListener {
     @Override
     public void exitVarDecimalExpr(WfParser.VarDecimalExprContext ctx) {
         System.out.println("exitVarDecimalExpr: " + ctx.getText());
-        
-        String name = ctx.id.getText();
-        System.out.println("name: " + name);
 
-        Var v = getVar(name);
+        Var var = getVar(ctx.id.getText());
+        exprs.push(new VarExpr(var.getDataType()));
     }
 }

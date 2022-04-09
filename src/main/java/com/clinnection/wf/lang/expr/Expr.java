@@ -17,7 +17,7 @@ public abstract class Expr {
             "+", Type.Plus,
             "/", Type.Div,
             "%", Type.Mod,
-            "#", Type.IntegerDecimal
+            "#", Type.Var
     ));
 
 
@@ -38,8 +38,7 @@ public abstract class Expr {
         Mult,
         Div,
         Mod,
-        IntegerDecimal
-
+        Var
     }
 
     public DataType getDataType() {
