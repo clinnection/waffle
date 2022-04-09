@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang;
 
 import com.clinnection.wf.lang.expr.*;
+import com.clinnection.wf.lang.var.Var;
 import com.clinnection.wf.parser.*;
 
 import java.util.HashMap;
@@ -9,19 +10,59 @@ import java.util.Stack;
 
 public class WfBuilder extends WfParserBaseListener {
 
-    static final Map<String, DataType> dataTypeMap = new HashMap(Map.of(
-            "boolean", DataType.Boolean,
-            "integer", DataType.Integer,
-            "decimal", DataType.Decimal,
-            "string", DataType.String
-    ));
-
-    private Stack<Expr>  exprs;
+    private Stack<Expr>   exprs;
+    private Stack<Block>  blocks;
 
     public WfBuilder() {
         exprs   = new Stack<Expr>();
+        blocks  = new Stack<Block>();
     }
 
+    private Var getVar(String name) {
+        Var v = null;
+        for (int i = blocks.size() - 1; i >= 0; i-- ) {
+            v = blocks.get(i).getVar(name);
+            if (v != null) {
+                break;
+            }
+        }
+        if (v == null) {
+            throw new RuntimeException(name + ": not found");
+        }
+        return v;
+    }
+
+    /*
+     * Program
+     */
+    @Override
+    public void enterProgram(WfParser.ProgramContext ctx) {
+        System.out.println("enterProgram: " + ctx.getText().toString());
+        blocks.push(new Block());
+    }
+
+    @Override
+    public void exitProgram(WfParser.ProgramContext ctx) {
+        System.out.println("exitProgram: " + ctx.getText().toString());
+
+        Block programBlock = blocks.pop();
+    }
+
+    /*
+     * Declare
+     */
+    @Override
+    public void exitDecl(WfParser.DeclContext ctx) {
+        System.out.println("exitDecl: " + ctx.getText().toString());
+
+        System.out.println("decl_var: " + ctx.decl_var.getText());
+        System.out.println("decl_type: " + ctx.decl_type.getText());
+        blocks.peek().addVar(Var.make(ctx.decl_var.getText(), ctx.decl_type.getText()));
+    }
+
+    /*
+     * Integer
+     */
     @Override
     public void exitLiteralIntegerExpr(WfParser.LiteralIntegerExprContext ctx) {
         System.out.println("exitLiteralIntegerExpr: " + ctx.getText().toString());
@@ -108,5 +149,13 @@ public class WfBuilder extends WfParserBaseListener {
         exprs.push(decimalBinaryExpr);
     }
 
+    @Override
+    public void exitVarDecimalExpr(WfParser.VarDecimalExprContext ctx) {
+        System.out.println("exitVarDecimalExpr: " + ctx.getText());
+        
+        String name = ctx.id.getText();
+        System.out.println("name: " + name);
 
+        Var v = getVar(name);
+    }
 }

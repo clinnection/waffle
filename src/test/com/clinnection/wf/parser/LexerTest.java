@@ -11,6 +11,6 @@ public class LexerTest {
 
   @Test
   public void equalsTest() {
-    assertThat("==", producesToken(EQUALS));
+    assertThat("==", producesToken(EQ));
   }
 }

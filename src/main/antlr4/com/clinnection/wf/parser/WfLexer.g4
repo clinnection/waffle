@@ -6,9 +6,9 @@ DECL_BOOLEAN : 'boolean' ;
 DECL_INTEGER : 'integer' ;
 DECL_DECIMAL : 'decimal' ;
 DECL_STRING : 'string' ;
+DECL_DATE : 'date' ;
 
 ASSIGN : ':=';
-EQUALS : '==';
 MINUS  : '-';
 ADD    : '+';
 MULT   : '*';
@@ -16,6 +16,13 @@ DIV    : '/';
 MOD    : '%';
 OPAR   : '(';
 CPAR   : ')';
+
+EQ : '==';
+NE : '!=';
+LT : '<';
+GT : '>';
+LE : '<=';
+GE : '>=';
 
 BOOLEAN
     : 'true'

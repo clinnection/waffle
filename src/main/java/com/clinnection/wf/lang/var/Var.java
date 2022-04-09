@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang.var;
 
 import com.clinnection.wf.lang.DataType;
+import com.clinnection.wf.lang.expr.Expr;
 
 import javax.xml.crypto.Data;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ public abstract class Var {
 
     private String name;
     private DataType dataType = DataType.Invalid;
+    private Expr expr;
 
     private static final Map<String, DataType> dataTypeMap = new HashMap(Map.of(
             "boolean", DataType.Boolean,
@@ -51,6 +53,14 @@ public abstract class Var {
                 throw new RuntimeException(type + ": invalid type");
         }
         return v;
+    }
+
+    public Expr getExpr() {
+        return expr;
+    }
+
+    public void setExpr(Expr expr) {
+        this.expr = expr;
     }
 
     public Var(String name, DataType dataType) {

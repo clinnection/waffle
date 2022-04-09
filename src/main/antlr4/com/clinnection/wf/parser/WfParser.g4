@@ -16,7 +16,7 @@ stmt
     ;
 
 decl
-    : DECLARE decl_var=IDENTIFIER decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING )
+    : DECLARE decl_var=IDENTIFIER decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE )
     ;
 
 
@@ -26,8 +26,8 @@ assignment_stmt
     ;
 
 compareExpr
-    : integerExpr EQUALS integerExpr # a
-    | decimalExpr EQUALS  decimalExpr # c
+    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr
+    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr
     ;
 
 integerExpr
@@ -36,6 +36,8 @@ integerExpr
     | integerExpr op=(MULT | DIV | MOD) integerExpr                    # binaryIntegerExpr
     | integerExpr op=(ADD | MINUS) integerExpr                         # binaryIntegerExpr
     | INTEGER                                                          # literalIntegerExpr
+
+    | id=IDENTIFIER                                                    # varIntegerExpr
     ;
 
 decimalExpr
@@ -47,5 +49,5 @@ decimalExpr
     | arg=DECIMAL                                                      # literalDecimalExpr
     | arg=INTEGER                                                      # literalDecimalExpr
 
-    | IDENTIFIER                                                       # varDecimalExpr
+    | id=IDENTIFIER                                                    # varDecimalExpr
     ;
