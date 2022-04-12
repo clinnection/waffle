@@ -1,6 +1,8 @@
 package com.clinnection.wf.lang;
 
 import com.clinnection.wf.lang.expr.*;
+import com.clinnection.wf.lang.stmt.AssignmentStmt;
+import com.clinnection.wf.lang.stmt.Stmt;
 import com.clinnection.wf.lang.var.Var;
 import com.clinnection.wf.parser.*;
 
@@ -12,10 +14,12 @@ public class WfBuilder extends WfParserBaseListener {
 
     private Stack<Expr>   exprs;
     private Stack<Block>  blocks;
+    private Stack<Stmt>   stmts;
 
     public WfBuilder() {
         exprs   = new Stack<Expr>();
         blocks  = new Stack<Block>();
+        stmts  = new Stack<Stmt>();
     }
 
     private Var getVar(String name) {
@@ -155,5 +159,23 @@ public class WfBuilder extends WfParserBaseListener {
 
         Var var = getVar(ctx.id.getText());
         exprs.push(new VarExpr(var.getDataType()));
+    }
+
+    /* Assignment */
+
+    @Override
+    public void exitIntegerAssignExpr(WfParser.IntegerAssignExprContext ctx) {
+        System.out.println("exitIntegerAssignExpr: " + ctx.getText());
+        System.out.println("id: " + ctx.id.getText());
+
+        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
+    }
+
+    @Override
+    public void exitDecimalAssignStmt(WfParser.DecimalAssignStmtContext ctx) {
+        System.out.println("exitVarDecimalExpr: " + ctx.getText());
+        System.out.println("id: " + ctx.id.getText());
+
+        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
     }
 }

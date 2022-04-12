@@ -3,6 +3,7 @@ parser grammar WfParser;
 options {
   tokenVocab=WfLexer;
 }
+
 program
     : block EOF
     ;
@@ -21,7 +22,8 @@ decl
 
 
 assignment_stmt
-    : IDENTIFIER ASSIGN decimalExpr                          # varAssignStmt
+    : id=IDENTIFIER ASSIGN expr=integerExpr                          # integerAssignExpr
+    | id=IDENTIFIER ASSIGN expr=decimalExpr                          # decimalAssignStmt
 //    | json_identifier ':=' expr                          # jsonAssignStmt
     ;
 
