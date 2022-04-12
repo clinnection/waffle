@@ -3,7 +3,6 @@ package com.clinnection.wf.lang.var;
 import com.clinnection.wf.lang.DataType;
 import com.clinnection.wf.lang.expr.Expr;
 
-import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +20,26 @@ public abstract class Var {
             "string", DataType.String
     ));
 
+    private static final Map<DataType, String> dataTypeName = new HashMap(Map.of(
+            DataType.Boolean, "boolean",
+            DataType.Integer, "integer",
+            DataType.Decimal, "decimal",
+            DataType.Date, "date",
+            DataType.String,"string"
+    ));
+
     public static DataType getType(String typeText) {
         if (!dataTypeMap.containsKey(typeText)) {
             throw new RuntimeException(typeText + ": invalid type");
         }
         return dataTypeMap.get(typeText);
+    }
+
+    public static String getTypeName(DataType dataType) {
+        if (!dataTypeName.containsKey(dataType)) {
+            throw new RuntimeException(dataType + ": invalid type");
+        }
+        return dataTypeName.get(dataType);
     }
 
     public static Var make(String name, String type) {
