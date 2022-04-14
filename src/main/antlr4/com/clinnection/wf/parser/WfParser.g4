@@ -22,7 +22,7 @@ decl
 
 
 assignment_stmt
-    : id=IDENTIFIER ASSIGN expr=integerExpr                          # integerAssignExpr
+    : id=IDENTIFIER ASSIGN expr=integerExpr                          # integerAssignStmt
     | id=IDENTIFIER ASSIGN expr=decimalExpr                          # decimalAssignStmt
 //    | json_identifier ':=' expr                          # jsonAssignStmt
     ;

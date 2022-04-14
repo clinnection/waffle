@@ -6,8 +6,6 @@ import com.clinnection.wf.lang.stmt.Stmt;
 import com.clinnection.wf.lang.var.Var;
 import com.clinnection.wf.parser.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 public class WfBuilder extends WfParserBaseListener {
@@ -162,13 +160,12 @@ public class WfBuilder extends WfParserBaseListener {
     }
 
     /* Assignment */
-
     @Override
-    public void exitIntegerAssignExpr(WfParser.IntegerAssignExprContext ctx) {
-        System.out.println("exitIntegerAssignExpr: " + ctx.getText());
+    public void exitIntegerAssignStmt(WfParser.IntegerAssignStmtContext ctx) {
+        System.out.println("exitIntegerAssignStmt: " + ctx.getText());
         System.out.println("id: " + ctx.id.getText());
 
-        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
+        assign(getVar(ctx.id.getText()));
     }
 
     @Override
@@ -176,6 +173,18 @@ public class WfBuilder extends WfParserBaseListener {
         System.out.println("exitVarDecimalExpr: " + ctx.getText());
         System.out.println("id: " + ctx.id.getText());
 
-        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
+        assign(getVar(ctx.id.getText()));
+    }
+
+    private void assign(Var var) {
+        Expr expr = exprs.pop();
+        DataType exprDataType = expr.getDataType();
+        DataType varDataType = var.getDataType();
+
+        if (varDataType != exprDataType) {
+            expr = new CastExpr(varDataType, expr);
+        }
+
+        stmts.push(new AssignmentStmt(var, expr));
     }
 }

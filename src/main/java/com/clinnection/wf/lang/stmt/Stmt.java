@@ -1,5 +1,7 @@
 package com.clinnection.wf.lang.stmt;
 
+import org.json.JSONObject;
+
 public abstract class Stmt {
 
     enum Type {

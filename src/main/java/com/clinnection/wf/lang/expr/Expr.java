@@ -9,7 +9,7 @@ public abstract class Expr {
     DataType dataType = DataType.Invalid;
     Type type = Type.Invalid;
 
-    static final Map<String, Expr.Type> map = new HashMap(Map.of(
+    private static final Map<String, Expr.Type> map = new HashMap(Map.of(
             "Literal", Type.Literal,
             "(", Type.Paren,
             "-", Type.Neg,
@@ -17,7 +17,7 @@ public abstract class Expr {
             "+", Type.Plus,
             "/", Type.Div,
             "%", Type.Mod,
-            "#", Type.Var
+            "#", Type.Cast
     ));
 
 
@@ -38,7 +38,7 @@ public abstract class Expr {
         Mult,
         Div,
         Mod,
-        Var
+        Cast
     }
 
     public DataType getDataType() {
