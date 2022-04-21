@@ -1,12 +1,34 @@
 lexer grammar WfLexer;
 
-DECLARE  : 'declare' ;
+@lexer::header {
+import java.util.*;
+}
 
-DECL_BOOLEAN : 'boolean' ;
-DECL_INTEGER : 'integer' ;
-DECL_DECIMAL : 'decimal' ;
-DECL_STRING : 'string' ;
-DECL_DATE : 'date' ;
+tokens {
+    VAR_BOOLEAN,
+    VAR_INTEGER,
+    VAR_DECIMAL,
+    VAR_STRING,
+    VAR_DATE
+}
+
+@lexer::members {
+    public Map<String, Integer> vars = new HashMap<String,Integer>(){{
+	    put("boolean", WfLexer.DECL_BOOLEAN);
+	    put("integer", WfLexer.DECL_INTEGER);
+	    put("decimal", WfLexer.DECL_DECIMAL);
+	    put("string", WfLexer.DECL_STRING);
+	    put("date", WfLexer.DECL_DATE);
+    }};
+    public String varType = null;
+
+}
+
+DECL_BOOLEAN : 'boolean'  { varType = getText(); };
+DECL_INTEGER : 'integer'  { varType = getText(); };
+DECL_DECIMAL : 'decimal'  { varType = getText(); };
+DECL_STRING : 'string'  { varType = getText(); };
+DECL_DATE : 'date' { varType = getText(); };
 
 ASSIGN : ':=';
 MINUS  : '-';
@@ -42,7 +64,22 @@ STRING
     ;
 
 IDENTIFIER
-    : [A-Za-z][A-Za-z0-9_]*
+    : [A-Za-z][A-Za-z0-9_]* {
+        System.out.println("IDENTIFIER: " + getText());
+        if (varType != null) {
+            System.out.println("varType: " + varType);
+            if (vars.containsKey(varType)) {
+                setType(vars.get(varType));
+            } else {
+                throw new RuntimeException("I'm so confused");
+            }
+
+
+        } else {
+            System.out.println("varType is null");
+        }
+        varType = null;
+    }
     ;
 
 SPACE

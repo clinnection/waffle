@@ -17,19 +17,33 @@ stmt
     ;
 
 decl
-    : DECLARE decl_var=IDENTIFIER decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE )
+    : decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE ) decl_var=IDENTIFIER
     ;
 
 
 assignment_stmt
-    : id=IDENTIFIER ASSIGN expr=integerExpr                          # integerAssignStmt
-    | id=IDENTIFIER ASSIGN expr=decimalExpr                          # decimalAssignStmt
+    : id=IDENTIFIER ASSIGN expra=integerExpr                  # assignStmt
+    | id=IDENTIFIER ASSIGN exprb=decimalExpr                  # assignStmt
+    | id=IDENTIFIER ASSIGN exprc=stringExpr                   # assignStmt
+    | id=IDENTIFIER ASSIGN exprd=dateExpr                     # assignStmt
 //    | json_identifier ':=' expr                          # jsonAssignStmt
     ;
 
 compareExpr
     : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr
     | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr
+    ;
+
+stringExpr
+    : stringExpr ADD stringExpr                                         # binaryBinaryExpr
+    | arg=STRING                                                        # literalStringExpr
+    | id=IDENTIFIER                                                     # varStringExpr
+    ;
+
+dateExpr
+    : dateExpr op=ADD integerExpr                                       # binaryDateExpr
+    | dateExpr op=MINUS integerExpr                                     # binaryDateExpr
+    | id=IDENTIFIER                                                     # varDateExpr
     ;
 
 integerExpr
@@ -39,7 +53,7 @@ integerExpr
     | integerExpr op=(ADD | MINUS) integerExpr                         # binaryIntegerExpr
     | INTEGER                                                          # literalIntegerExpr
 
-    | id=IDENTIFIER                                                    # varIntegerExpr
+//    | id=IDENTIFIER                                                    # varIntegerExpr
     ;
 
 decimalExpr
@@ -48,8 +62,12 @@ decimalExpr
     | decimalExpr op=(MULT | DIV | MOD) decimalExpr                    # binaryDecimalExpr
     | decimalExpr op=(ADD | MINUS) decimalExpr                         # binaryDecimalExpr
 
-    | arg=DECIMAL                                                      # literalDecimalExpr
+    | arg=VAR_DECIMAL                                                  # literalDecimalExpr
     | arg=INTEGER                                                      # literalDecimalExpr
 
     | id=IDENTIFIER                                                    # varDecimalExpr
+    ;
+
+varExpr
+    : id=IDENTIFIER # varExprx
     ;

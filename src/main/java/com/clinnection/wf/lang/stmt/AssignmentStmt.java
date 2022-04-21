@@ -1,5 +1,7 @@
 package com.clinnection.wf.lang.stmt;
 
+import com.clinnection.wf.lang.DataType;
+import com.clinnection.wf.lang.expr.CastExpr;
 import com.clinnection.wf.lang.expr.Expr;
 import com.clinnection.wf.lang.var.Var;
 
@@ -10,9 +12,16 @@ public class AssignmentStmt extends Stmt {
     public AssignmentStmt(Var var, Expr expr) {
         super(Type.VarAssignment);
 
-        if (var.getDataType() != expr.getDataType()) {
-            throw new RuntimeException(var.getName() + ": cannot assign "+ expr.getDataType() + " to " + var.getDataType());
+        DataType varDataType = var.getDataType();
+        DataType exprDataType = expr.getDataType();
+
+        System.out.println("varDataType: " + varDataType);
+        System.out.println("exprDataType: " + exprDataType);
+
+        if (varDataType != exprDataType) {
+            expr = new CastExpr(varDataType, expr);
         }
+
         this.var = var;
         this.expr = expr;
     }

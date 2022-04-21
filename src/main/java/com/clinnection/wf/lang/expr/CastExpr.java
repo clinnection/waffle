@@ -12,13 +12,13 @@ public class CastExpr extends UnaryExpr {
             DataType.Boolean, List.of(),
             DataType.Integer, List.of(),
             DataType.Decimal, List.of(DataType.Integer),
-            DataType.Date, List.of(),
+            DataType.Date, List.of(DataType.String),
             DataType.String, List.of()
     ));
 
     public CastExpr(DataType dataType, Expr rhs) {
         super(dataType, "#", rhs);
-        System.out.println("casting :" + rhs.getDataType() + " to: " + dataType);
+        System.out.println("casting: " + rhs.getDataType() + " to: " + dataType);
 
         if (!dataTypeMap.containsKey(dataType)) {
             throw new RuntimeException(dataType + ": invalid data type");

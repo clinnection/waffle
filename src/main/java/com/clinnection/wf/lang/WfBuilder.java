@@ -5,6 +5,7 @@ import com.clinnection.wf.lang.stmt.AssignmentStmt;
 import com.clinnection.wf.lang.stmt.Stmt;
 import com.clinnection.wf.lang.var.Var;
 import com.clinnection.wf.parser.*;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.Stack;
 
@@ -32,6 +33,11 @@ public class WfBuilder extends WfParserBaseListener {
             throw new RuntimeException(name + ": not found");
         }
         return v;
+    }
+
+    @Override
+    public void exitEveryRule(ParserRuleContext ctx) {
+        System.out.println("- exitEveryRule: " + ctx.getText().toString());
     }
 
     /*
@@ -102,7 +108,7 @@ public class WfBuilder extends WfParserBaseListener {
 
 
     /*
-        Decimal
+     *  Decimal
      */
     @Override
     public void exitLiteralDecimalExpr(WfParser.LiteralDecimalExprContext ctx) {
@@ -114,8 +120,6 @@ public class WfBuilder extends WfParserBaseListener {
         switch (ctx.arg.getType()) {
             case WfLexer.INTEGER:
             case WfLexer.DECIMAL:
-//                System.out.println("WfLexer.DECIMAL");
-//                System.out.println("WfLexer.INTEGER");
                 decimalLiteralExpr = new DecimalLiteralExpr(ctx.getText());
                 break;
             default:
@@ -159,32 +163,40 @@ public class WfBuilder extends WfParserBaseListener {
         exprs.push(new VarExpr(var.getDataType()));
     }
 
-    /* Assignment */
+    /*
+     * String
+     */
+
     @Override
-    public void exitIntegerAssignStmt(WfParser.IntegerAssignStmtContext ctx) {
-        System.out.println("exitIntegerAssignStmt: " + ctx.getText());
+    public void exitLiteralStringExpr(WfParser.LiteralStringExprContext ctx) {
+        System.out.println("exitLiteralStringExpr: " + ctx.getText());
+
+        StringLiteralExpr stringLiteralExpr = new StringLiteralExpr(ctx.getText());
+        exprs.push(stringLiteralExpr);
+    }
+
+    /*
+     * Assignment
+     */
+    @Override
+    public void exitAssignStmt(WfParser.AssignStmtContext ctx) {
+        System.out.println("\nexitAssignStmt: " + ctx.getText());
         System.out.println("id: " + ctx.id.getText());
 
-        assign(getVar(ctx.id.getText()));
+        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
+    }
+
+    /*
+     * Date
+     */
+
+    @Override
+    public void exitVarDateExpr(WfParser.VarDateExprContext ctx) {
+        System.out.println("exitVarDateExpr: " + ctx.getText());
     }
 
     @Override
-    public void exitDecimalAssignStmt(WfParser.DecimalAssignStmtContext ctx) {
-        System.out.println("exitVarDecimalExpr: " + ctx.getText());
-        System.out.println("id: " + ctx.id.getText());
-
-        assign(getVar(ctx.id.getText()));
-    }
-
-    private void assign(Var var) {
-        Expr expr = exprs.pop();
-        DataType exprDataType = expr.getDataType();
-        DataType varDataType = var.getDataType();
-
-        if (varDataType != exprDataType) {
-            expr = new CastExpr(varDataType, expr);
-        }
-
-        stmts.push(new AssignmentStmt(var, expr));
+    public void exitBinaryDateExpr(WfParser.BinaryDateExprContext ctx) {
+        System.out.println("exitBinaryDateExpr: " + ctx.getText());
     }
 }
