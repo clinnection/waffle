@@ -14,11 +14,11 @@ tokens {
 
 @lexer::members {
     public Map<String, Integer> vars = new HashMap<String,Integer>(){{
-	    put("boolean", WfLexer.DECL_BOOLEAN);
-	    put("integer", WfLexer.DECL_INTEGER);
-	    put("decimal", WfLexer.DECL_DECIMAL);
-	    put("string", WfLexer.DECL_STRING);
-	    put("date", WfLexer.DECL_DATE);
+        put("boolean", WfLexer.VAR_BOOLEAN);
+        put("integer", WfLexer.VAR_INTEGER);
+        put("decimal", WfLexer.VAR_DECIMAL);
+        put("string", WfLexer.VAR_STRING);
+        put("date", WfLexer.VAR_DATE);
     }};
     public String varType = null;
 
@@ -65,11 +65,16 @@ STRING
 
 IDENTIFIER
     : [A-Za-z][A-Za-z0-9_]* {
+
         System.out.println("IDENTIFIER: " + getText());
         if (varType != null) {
             System.out.println("varType: " + varType);
             if (vars.containsKey(varType)) {
-                setType(vars.get(varType));
+                if (vars.containsKey(varType)) {
+                    int type = vars.get(varType);
+                    System.out.println("I shall be setting the type to: " + type);
+                    setType(type);
+                }
             } else {
                 throw new RuntimeException("I'm so confused");
             }
