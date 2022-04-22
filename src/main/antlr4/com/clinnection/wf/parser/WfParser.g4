@@ -17,13 +17,13 @@ stmt
     ;
 
 decl
-    : decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE ) decl_var=IDENTIFIER
+    : decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE ) decl_var=VAR_DECIMAL
     ;
 
 
 assignment_stmt
     : id=IDENTIFIER ASSIGN expra=integerExpr                  # assignStmt
-    | id=IDENTIFIER ASSIGN exprb=decimalExpr                  # assignStmt
+    | id=VAR_DECIMAL ASSIGN exprb=decimalExpr                  # assignStmt
     | id=IDENTIFIER ASSIGN exprc=stringExpr                   # assignStmt
     | id=IDENTIFIER ASSIGN exprd=dateExpr                     # assignStmt
 //    | json_identifier ':=' expr                          # jsonAssignStmt
