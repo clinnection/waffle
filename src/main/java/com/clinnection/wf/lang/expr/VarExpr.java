@@ -6,8 +6,9 @@ import com.clinnection.wf.lang.var.Var;
 public class VarExpr extends Expr {
     private Var var;
 
-    public VarExpr(DataType dataType) {
-        super(dataType, "#");
+    public VarExpr(Var var) {
+        super(var.getDataType(), "#");
+        this.var = var;
     }
 
     public Var getVar() {

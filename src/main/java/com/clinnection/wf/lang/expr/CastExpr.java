@@ -11,7 +11,7 @@ public class CastExpr extends UnaryExpr {
     private static final Map<DataType, List<DataType>> dataTypeMap = new HashMap(Map.of(
             DataType.Boolean, List.of(),
             DataType.Integer, List.of(),
-            DataType.Decimal, List.of(DataType.Integer),
+            DataType.Decimal, List.of(),
             DataType.Date, List.of(DataType.String),
             DataType.String, List.of()
     ));

@@ -17,33 +17,32 @@ stmt
     ;
 
 decl
-    : decl_type=( DECL_BOOLEAN | DECL_INTEGER | DECL_DECIMAL | DECL_STRING | DECL_DATE ) decl_var=VAR_DECIMAL
+    : decl_type=DECL_BOOLEAN    decl_var=VAR_BOOLEAN
+    | decl_type=DECL_INTEGER    decl_var=VAR_INTEGER
+    | decl_type=DECL_DECIMAL    decl_var=VAR_DECIMAL
+    | decl_type=DECL_STRING     decl_var=VAR_STRING
+    | decl_type=DECL_DATE       decl_var=VAR_DATE
     ;
 
 
 assignment_stmt
-    : id=IDENTIFIER ASSIGN expra=integerExpr                  # assignStmt
-    | id=VAR_DECIMAL ASSIGN exprb=decimalExpr                  # assignStmt
-    | id=IDENTIFIER ASSIGN exprc=stringExpr                   # assignStmt
-    | id=IDENTIFIER ASSIGN exprd=dateExpr                     # assignStmt
-//    | json_identifier ':=' expr                          # jsonAssignStmt
+    : id=VAR_DECIMAL ASSIGN decimalExpr         # assignStmt
+    | id=VAR_INTEGER ASSIGN integerExpr         # assignStmt
+    | id=VAR_STRING  ASSIGN stringExpr          # assignStmt
+    | id=VAR_DATE    ASSIGN dateExpr            # assignStmt
+    | id=VAR_DATE    ASSIGN stringExpr          # assignStmt
     ;
 
-compareExpr
-    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr
-    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr
-    ;
-
+//compareExpr
+//    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr
+//    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr
+//    ;
+//
 stringExpr
-    : stringExpr ADD stringExpr                                         # binaryBinaryExpr
-    | arg=STRING                                                        # literalStringExpr
-    | id=IDENTIFIER                                                     # varStringExpr
-    ;
-
-dateExpr
-    : dateExpr op=ADD integerExpr                                       # binaryDateExpr
-    | dateExpr op=MINUS integerExpr                                     # binaryDateExpr
-    | id=IDENTIFIER                                                     # varDateExpr
+    : op=OPAR stringExpr CPAR                                           # unaryStringExpr
+    | stringExpr op=ADD stringExpr                                      # binaryStringExpr
+    | VAR_STRING                                                        # varStringExpr
+    | STRING                                                            # literalStringExpr
     ;
 
 integerExpr
@@ -51,9 +50,11 @@ integerExpr
     | op=OPAR integerExpr CPAR                                         # unaryIntegerExpr
     | integerExpr op=(MULT | DIV | MOD) integerExpr                    # binaryIntegerExpr
     | integerExpr op=(ADD | MINUS) integerExpr                         # binaryIntegerExpr
-    | INTEGER                                                          # literalIntegerExpr
 
-//    | id=IDENTIFIER                                                    # varIntegerExpr
+    | dateExpr op=MINUS dateExpr                                       # binaryIntegerExpr
+
+    | VAR_INTEGER                                                      # varIntegerExpr
+    | INTEGER                                                          # literalIntegerExpr
     ;
 
 decimalExpr
@@ -62,12 +63,12 @@ decimalExpr
     | decimalExpr op=(MULT | DIV | MOD) decimalExpr                    # binaryDecimalExpr
     | decimalExpr op=(ADD | MINUS) decimalExpr                         # binaryDecimalExpr
 
-    | arg=VAR_DECIMAL                                                  # literalDecimalExpr
-    | arg=INTEGER                                                      # literalDecimalExpr
-
-    | id=IDENTIFIER                                                    # varDecimalExpr
+    | arg=(VAR_DECIMAL | VAR_INTEGER )                                 # varDecimalExpr
+    | arg=(DECIMAL | INTEGER )                                         # literalDecimalExpr
     ;
 
-varExpr
-    : id=IDENTIFIER # varExprx
+dateExpr
+    : op=OPAR dateExpr CPAR                                             # unaryDateExpr
+    | dateExpr op=(ADD | MINUS) integerExpr                             # binaryDateExpr
+    | VAR_DATE                                                          # varDateExpr
     ;
