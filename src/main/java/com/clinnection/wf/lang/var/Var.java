@@ -2,6 +2,7 @@ package com.clinnection.wf.lang.var;
 
 import com.clinnection.wf.lang.DataType;
 import com.clinnection.wf.lang.expr.Expr;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,5 +97,11 @@ public abstract class Var {
 
     public void setDataType(DataType dataType) {
         this.dataType = dataType;
+    }
+
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putOnce("type", dataType);
+        return jsonObject;
     }
 }

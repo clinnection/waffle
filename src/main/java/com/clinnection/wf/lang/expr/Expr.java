@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang.expr;
 
 import com.clinnection.wf.lang.DataType;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,5 +56,11 @@ public abstract class Expr {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putOnce("type", type);
+        return jsonObject;
     }
 }

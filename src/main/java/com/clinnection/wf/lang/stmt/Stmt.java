@@ -28,9 +28,9 @@ public abstract class Stmt {
         this.type = type;
     }
 
-//    public JSONObject toJsonObject() {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.putOnce("type", type);
-//        return jsonObject;
-//    }
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.putOnce("type", type);
+        return jsonObject;
+    }
 }

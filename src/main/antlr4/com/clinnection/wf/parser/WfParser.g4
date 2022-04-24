@@ -33,11 +33,22 @@ assignment_stmt
     | id=VAR_DATE    ASSIGN stringExpr          # assignStmt
     ;
 
-//compareExpr
-//    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr
-//    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr
-//    ;
-//
+booleanExpr
+    : OPAR booleanExpr CPAR                     # booleanUnaryExpr
+    | NOT booleanExpr                           # booleanUnaryExpr
+    | booleanExpr op=(AND | OR) booleanExpr     # booleanBinaryExpr
+    | compareExpr                               # booleanComapreExpr
+    | ( TRUE | FALSE )                          # booleanLiteralExpr
+    ;
+
+compareExpr
+    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr # integerCompareExpr
+    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr # decimalCompareExpr
+    | stringExpr  op=( EQ | NE | LT | GT | LT | GE | LE ) stringExpr  # stringCompareExpr
+    | dateExpr    op=( EQ | NE | LT | GT | LT | GE | LE ) dateExpr    # dateCompareExpr
+    ;
+
+
 stringExpr
     : op=OPAR stringExpr CPAR                                           # unaryStringExpr
     | stringExpr op=ADD stringExpr                                      # binaryStringExpr

@@ -42,6 +42,12 @@ MOD    : '%';
 OPAR   : '(';
 CPAR   : ')';
 
+AND   : '&&';
+OR    : '||';
+NOT   : '!';
+TRUE  : 'true';
+FALSE : 'false';
+
 EQ : '==';
 NE : '!=';
 LT : '<';
@@ -49,10 +55,10 @@ GT : '>';
 LE : '<=';
 GE : '>=';
 
-BOOLEAN
-    : 'true'
-    | 'false'
-    ;
+//BOOLEAN
+//    : 'true'
+//    | 'false'
+//    ;
 
 INTEGER
     : [0-9][0-9]*
