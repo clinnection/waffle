@@ -26,7 +26,8 @@ decl
 
 
 assignment_stmt
-    : id=VAR_DECIMAL ASSIGN decimalExpr         # assignStmt
+    : id=VAR_BOOLEAN ASSIGN booleanExpr         # assignStmt
+    | id=VAR_DECIMAL ASSIGN decimalExpr         # assignStmt
     | id=VAR_INTEGER ASSIGN integerExpr         # assignStmt
     | id=VAR_STRING  ASSIGN stringExpr          # assignStmt
     | id=VAR_DATE    ASSIGN dateExpr            # assignStmt
@@ -34,18 +35,19 @@ assignment_stmt
     ;
 
 booleanExpr
-    : OPAR booleanExpr CPAR                     # booleanUnaryExpr
-    | NOT booleanExpr                           # booleanUnaryExpr
-    | booleanExpr op=(AND | OR) booleanExpr     # booleanBinaryExpr
-    | compareExpr                               # booleanComapreExpr
-    | ( TRUE | FALSE )                          # booleanLiteralExpr
+    : op=OPAR booleanExpr CPAR                          # booleanUnaryExpr
+    | op=NOT booleanExpr                                # booleanUnaryExpr
+    | booleanExpr op=(EQ | NE | AND | OR) booleanExpr   # booleanBinaryExpr
+    | compareExpr                                       # booleanComapreExpr
+    | VAR_BOOLEAN                                       # varBooleanExpr
+    | ( TRUE | FALSE )                                  # booleanLiteralExpr
     ;
 
 compareExpr
-    : integerExpr op=( EQ | NE | LT | GT | LT | GE | LE ) integerExpr # integerCompareExpr
-    | decimalExpr op=( EQ | NE | LT | GT | LT | GE | LE ) decimalExpr # decimalCompareExpr
-    | stringExpr  op=( EQ | NE | LT | GT | LT | GE | LE ) stringExpr  # stringCompareExpr
-    | dateExpr    op=( EQ | NE | LT | GT | LT | GE | LE ) dateExpr    # dateCompareExpr
+    : integerExpr op=( EQ | NE | LT | GT | GE | LE ) integerExpr # integerCompareExpr
+    | decimalExpr op=( EQ | NE | LT | GT | GE | LE ) decimalExpr # decimalCompareExpr
+    | stringExpr  op=( EQ | NE | LT | GT | GE | LE ) stringExpr  # stringCompareExpr
+    | dateExpr    op=( EQ | NE | LT | GT | GE | LE ) dateExpr    # dateCompareExpr
     ;
 
 

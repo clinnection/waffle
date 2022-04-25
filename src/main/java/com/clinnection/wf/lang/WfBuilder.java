@@ -256,5 +256,52 @@ public class WfBuilder extends WfParserBaseListener {
         exprs.push(dateBinaryExpr);
     }
 
+    /*
+     * Boolean
+     */
+    @Override
+    public void exitBooleanUnaryExpr(WfParser.BooleanUnaryExprContext ctx) {
+        System.out.println("exitBooleanUnaryExpr: " + ctx.getText());
 
+        String op = ctx.op.getText();
+        System.out.println("op: " + op);
+
+        Expr rhs = exprs.pop();
+
+        BooleanUnaryExpr booleanUnaryExpr = new BooleanUnaryExpr(op, rhs);
+        exprs.push(booleanUnaryExpr);
+    }
+
+    @Override
+    public void exitBooleanBinaryExpr(WfParser.BooleanBinaryExprContext ctx) {
+        System.out.println("exitBooleanBinaryExpr: " + ctx.getText());
+
+        String op = ctx.op.getText();
+        System.out.println("op: " + op);
+
+        Expr rhs = exprs.pop();
+        Expr lhs = exprs.pop();
+
+        BooleanBinaryExpr booleanBinaryExpr = new BooleanBinaryExpr(op, lhs, rhs);
+        exprs.push(booleanBinaryExpr);
+    }
+
+    @Override
+    public void exitBooleanLiteralExpr(WfParser.BooleanLiteralExprContext ctx) {
+        System.out.println("exitBooleanLiteralExpr: " + ctx.getText());
+
+        exprs.push(new BooleanLiteralExpr(ctx.getText()));
+    }
+
+    @Override
+    public void exitVarBooleanExpr(WfParser.VarBooleanExprContext ctx) {
+        System.out.println("exitVarBooleanExpr: " + ctx.getText());
+
+        exprs.push(new VarExpr(getVar(ctx.getText())));
+    }
+
+    @Override
+    public void exitBooleanComapreExpr(WfParser.BooleanComapreExprContext ctx) {
+        System.out.println("exitVarBooleanExpr: " + ctx.getText());
+    }
 }

@@ -10,16 +10,29 @@ public abstract class Expr {
     DataType dataType = DataType.Invalid;
     Type type = Type.Invalid;
 
-    private static final Map<String, Expr.Type> map = new HashMap(Map.of(
-            "Literal", Type.Literal,
-            "(", Type.Paren,
-            "-", Type.Neg,
-            "*", Type.Mult,
-            "+", Type.Plus,
-            "/", Type.Div,
-            "%", Type.Mod,
-            "#", Type.Cast
-    ));
+
+
+    private static final Map<String, Expr.Type> map = new HashMap<String, Expr.Type>(){{
+        put("Literal", Type.Literal);
+        put("(", Type.Paren);
+        put("-", Type.Neg);
+        put("*", Type.Mult);
+        put("+", Type.Plus);
+        put("/", Type.Div);
+        put("%", Type.Mod);
+
+        put("&&", Type.And);
+        put("||", Type.Or);
+
+        put("==", Type.EQ);
+        put("!=", Type.NE);
+        put("<",  Type.LT);
+        put(">",  Type.GT);
+        put("<=", Type.LE);
+        put(">=", Type.GE);
+
+        put("#", Type.Cast);
+    }};
 
 
     public Expr(DataType dataType, String op) {
@@ -39,6 +52,17 @@ public abstract class Expr {
         Mult,
         Div,
         Mod,
+
+        EQ,
+        NE,
+        LT,
+        GT,
+        LE,
+        GE,
+
+        And,
+        Or,
+
         Cast
     }
 
@@ -64,3 +88,27 @@ public abstract class Expr {
         return jsonObject;
     }
 }
+
+
+/*
+MINUS  : '-';
+ADD    : '+';
+MULT   : '*';
+DIV    : '/';
+MOD    : '%';
+OPAR   : '(';
+CPAR   : ')';
+
+AND   : '&&';
+OR    : '||';
+NOT   : '!';
+TRUE  : 'true';
+FALSE : 'false';
+
+EQ : '==';
+NE : '!=';
+LT : '<';
+GT : '>';
+LE : '<=';
+GE : '>=';
+ */

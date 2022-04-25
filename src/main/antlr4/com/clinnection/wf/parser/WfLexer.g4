@@ -45,6 +45,7 @@ CPAR   : ')';
 AND   : '&&';
 OR    : '||';
 NOT   : '!';
+
 TRUE  : 'true';
 FALSE : 'false';
 
