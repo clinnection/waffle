@@ -12,4 +12,18 @@ public abstract class BinaryExpr extends Expr {
         this.lhs = lhs;
         this.rhs = rhs;
     }
+
+    public BinaryExpr(DataType dataType, Operation op, Expr lhs, Expr rhs) {
+        super(dataType, op);
+        this.lhs = lhs;
+        this.rhs = rhs;
+    }
+
+    public Expr getLhs() {
+        return lhs;
+    }
+
+    public Expr getRhs() {
+        return rhs;
+    }
 }

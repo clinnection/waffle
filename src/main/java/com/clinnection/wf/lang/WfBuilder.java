@@ -304,7 +304,7 @@ public class WfBuilder extends WfParserBaseListener {
     public void exitCompareBooleanExpr(WfParser.CompareBooleanExprContext ctx) {
         System.out.println("exitCompareBooleanExpr: " + ctx.getText());
 
-        Expr expr = exprs.pop();
+        CompareExpr expr = (CompareExpr) exprs.pop();
         BooleanCompareExpr booleanCompareExpr = new BooleanCompareExpr(expr);
         exprs.push(booleanCompareExpr);
     }

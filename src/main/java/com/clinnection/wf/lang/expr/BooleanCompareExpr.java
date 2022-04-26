@@ -2,9 +2,9 @@ package com.clinnection.wf.lang.expr;
 
 import com.clinnection.wf.lang.DataType;
 
-public class BooleanCompareExpr extends UnaryExpr {
+public class BooleanCompareExpr extends BinaryExpr {
 
-    public BooleanCompareExpr(Expr expr) {
-        super(expr.getDataType(), expr.getOp(), expr);
+    public BooleanCompareExpr(CompareExpr expr) {
+        super(expr.getDataType(), expr.getOp(), expr.getLhs(), expr.getRhs());
     }
 }
