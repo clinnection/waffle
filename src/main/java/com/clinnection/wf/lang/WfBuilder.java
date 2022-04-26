@@ -260,7 +260,7 @@ public class WfBuilder extends WfParserBaseListener {
      * Boolean
      */
     @Override
-    public void exitBooleanUnaryExpr(WfParser.BooleanUnaryExprContext ctx) {
+    public void exitUnaryBooleanExpr(WfParser.UnaryBooleanExprContext ctx) {
         System.out.println("exitBooleanUnaryExpr: " + ctx.getText());
 
         String op = ctx.op.getText();
@@ -273,7 +273,7 @@ public class WfBuilder extends WfParserBaseListener {
     }
 
     @Override
-    public void exitBooleanBinaryExpr(WfParser.BooleanBinaryExprContext ctx) {
+    public void exitBinaryBooleanExpr(WfParser.BinaryBooleanExprContext ctx) {
         System.out.println("exitBooleanBinaryExpr: " + ctx.getText());
 
         String op = ctx.op.getText();
@@ -287,7 +287,7 @@ public class WfBuilder extends WfParserBaseListener {
     }
 
     @Override
-    public void exitBooleanLiteralExpr(WfParser.BooleanLiteralExprContext ctx) {
+    public void exitLiteralBooleanExpr(WfParser.LiteralBooleanExprContext ctx) {
         System.out.println("exitBooleanLiteralExpr: " + ctx.getText());
 
         exprs.push(new BooleanLiteralExpr(ctx.getText()));
@@ -301,7 +301,25 @@ public class WfBuilder extends WfParserBaseListener {
     }
 
     @Override
-    public void exitBooleanComapreExpr(WfParser.BooleanComapreExprContext ctx) {
-        System.out.println("exitVarBooleanExpr: " + ctx.getText());
+    public void exitCompareBooleanExpr(WfParser.CompareBooleanExprContext ctx) {
+        System.out.println("exitCompareBooleanExpr: " + ctx.getText());
+
+        Expr expr = exprs.pop();
+        BooleanCompareExpr booleanCompareExpr = new BooleanCompareExpr(expr);
+        exprs.push(booleanCompareExpr);
+    }
+
+    @Override
+    public void exitCompareExpr(WfParser.CompareExprContext ctx) {
+        System.out.println("exitCompareExpr: " + ctx.getText());
+
+        String op = ctx.op.getText();
+        System.out.println("op: " + op);
+
+        Expr rhs = exprs.pop();
+        Expr lhs = exprs.pop();
+
+        CompareExpr compareExpr = new CompareExpr(op, lhs, rhs);
+        exprs.push(compareExpr);
     }
 }

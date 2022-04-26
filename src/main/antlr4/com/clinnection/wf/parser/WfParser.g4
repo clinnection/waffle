@@ -35,19 +35,19 @@ assignment_stmt
     ;
 
 booleanExpr
-    : op=OPAR booleanExpr CPAR                          # booleanUnaryExpr
-    | op=NOT booleanExpr                                # booleanUnaryExpr
-    | booleanExpr op=(EQ | NE | AND | OR) booleanExpr   # booleanBinaryExpr
-    | compareExpr                                       # booleanComapreExpr
+    : op=OPAR booleanExpr CPAR                          # unaryBooleanExpr
+    | op=NOT booleanExpr                                # unaryBooleanExpr
+    | booleanExpr op=(EQ | NE | AND | OR) booleanExpr   # binaryBooleanExpr
+    | compareExpr                                       # compareBooleanExpr
     | VAR_BOOLEAN                                       # varBooleanExpr
-    | ( TRUE | FALSE )                                  # booleanLiteralExpr
+    | ( TRUE | FALSE )                                  # literalBooleanExpr
     ;
 
 compareExpr
-    : integerExpr op=( EQ | NE | LT | GT | GE | LE ) integerExpr # integerCompareExpr
-    | decimalExpr op=( EQ | NE | LT | GT | GE | LE ) decimalExpr # decimalCompareExpr
-    | stringExpr  op=( EQ | NE | LT | GT | GE | LE ) stringExpr  # stringCompareExpr
-    | dateExpr    op=( EQ | NE | LT | GT | GE | LE ) dateExpr    # dateCompareExpr
+    : integerExpr op=( EQ | NE | LT | GT | GE | LE ) integerExpr
+    | decimalExpr op=( EQ | NE | LT | GT | GE | LE ) decimalExpr
+    | stringExpr  op=( EQ | NE | LT | GT | GE | LE ) stringExpr
+    | dateExpr    op=( EQ | NE | LT | GT | GE | LE ) dateExpr
     ;
 
 

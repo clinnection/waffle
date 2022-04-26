@@ -7,43 +7,47 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Expr {
-    DataType dataType = DataType.Invalid;
-    Type type = Type.Invalid;
+    private DataType dataType = DataType.Invalid;
+    private Operation op = Operation.Invalid;
 
 
 
-    private static final Map<String, Expr.Type> map = new HashMap<String, Expr.Type>(){{
-        put("Literal", Type.Literal);
-        put("(", Type.Paren);
-        put("-", Type.Neg);
-        put("*", Type.Mult);
-        put("+", Type.Plus);
-        put("/", Type.Div);
-        put("%", Type.Mod);
+    private static final Map<String, Operation> opMap = new HashMap<String, Operation>(){{
+        put("Literal", Operation.Literal);
+        put("(", Operation.Paren);
+        put("-", Operation.Neg);
+        put("*", Operation.Mult);
+        put("+", Operation.Plus);
+        put("/", Operation.Div);
+        put("%", Operation.Mod);
 
-        put("&&", Type.And);
-        put("||", Type.Or);
+        put("&&", Operation.And);
+        put("||", Operation.Or);
 
-        put("==", Type.EQ);
-        put("!=", Type.NE);
-        put("<",  Type.LT);
-        put(">",  Type.GT);
-        put("<=", Type.LE);
-        put(">=", Type.GE);
+        put("==", Operation.EQ);
+        put("!=", Operation.NE);
+        put("<",  Operation.LT);
+        put(">",  Operation.GT);
+        put("<=", Operation.LE);
+        put(">=", Operation.GE);
 
-        put("#", Type.Cast);
+        put("#", Operation.Cast);
     }};
 
+    public Expr(DataType dataType, Operation op) {
+        this.dataType = dataType;
+        this.op = op;
+    }
 
     public Expr(DataType dataType, String op) {
         this.dataType = dataType;
-        if (!map.containsKey(op)) {
+        if (!opMap.containsKey(op)) {
             throw new RuntimeException(op + ": Invalid expression op");
         }
-        this.type = map.get(op);
+        this.op = opMap.get(op);
     }
 
-    enum Type {
+    enum Operation {
         Invalid,
         Literal,
         Paren,
@@ -74,17 +78,17 @@ public abstract class Expr {
         this.dataType = dataType;
     }
 
-    public Type getType() {
-        return type;
+    public Operation getOp() {
+        return op;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setOp(Operation op) {
+        this.op = op;
     }
 
     public JSONObject toParseTree() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.putOnce("type", type);
+        jsonObject.putOnce("type", op);
         return jsonObject;
     }
 }

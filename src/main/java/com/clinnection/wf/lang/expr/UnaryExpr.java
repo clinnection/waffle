@@ -10,4 +10,9 @@ public abstract class UnaryExpr extends Expr {
         super(dataType, op);
         this.rhs = rhs;
     }
+
+    public UnaryExpr(DataType dataType, Operation op, Expr rhs) {
+        super(dataType, op);
+        this.rhs = rhs;
+    }
 }
