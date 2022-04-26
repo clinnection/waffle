@@ -63,8 +63,6 @@ public class WfBuilder extends WfParserBaseListener {
     public void exitDecl(WfParser.DeclContext ctx) {
         System.out.println("exitDecl: " + ctx.getText());
 
-        System.out.println("decl_var: " + ctx.decl_var.getText());
-        System.out.println("decl_type: " + ctx.decl_type.getText());
         blocks.peek().addVar(Var.make(ctx.decl_var.getText(), ctx.decl_type.getText()));
     }
 
@@ -73,8 +71,7 @@ public class WfBuilder extends WfParserBaseListener {
      */
     @Override
     public void exitAssignStmt(WfParser.AssignStmtContext ctx) {
-        System.out.println("\nexitAssignStmt: " + ctx.getText());
-        System.out.println("id: " + ctx.id.getText());
+        System.out.println("exitAssignStmt: " + ctx.getText());
 
         stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
     }
