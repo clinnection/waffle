@@ -4,6 +4,7 @@ import com.clinnection.wf.lang.DataType;
 import com.clinnection.wf.lang.expr.CastExpr;
 import com.clinnection.wf.lang.expr.Expr;
 import com.clinnection.wf.lang.var.Var;
+import org.json.JSONObject;
 
 public class AssignmentStmt extends Stmt {
     private Var var;
@@ -40,5 +41,14 @@ public class AssignmentStmt extends Stmt {
 
     public void setExpr(Expr expr) {
         this.expr = expr;
+    }
+
+    @Override
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = super.toParseTree();
+        jsonObject.put("lhs", var.toParseTree());
+        jsonObject.put("rhs", expr.toParseTree());
+
+        return jsonObject;
     }
 }

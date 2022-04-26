@@ -13,12 +13,10 @@ public class WfBuilder extends WfParserBaseListener {
 
     private Stack<Expr> exprs;
     private Stack<Block> blocks;
-    private Stack<Stmt> stmts;
 
     public WfBuilder() {
         exprs = new Stack<Expr>();
         blocks = new Stack<Block>();
-        stmts = new Stack<Stmt>();
     }
 
     private Var getVar(String name) {
@@ -54,6 +52,7 @@ public class WfBuilder extends WfParserBaseListener {
         System.out.println("exitProgram: " + ctx.getText());
 
         Block programBlock = blocks.pop();
+        System.out.println(programBlock.toParseTree().toString());
     }
 
     /*
@@ -73,7 +72,7 @@ public class WfBuilder extends WfParserBaseListener {
     public void exitAssignStmt(WfParser.AssignStmtContext ctx) {
         System.out.println("exitAssignStmt: " + ctx.getText());
 
-        stmts.push(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
+        blocks.peek().addStmt(new AssignmentStmt(getVar(ctx.id.getText()), exprs.pop()));
     }
 
     /*

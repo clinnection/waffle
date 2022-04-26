@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang.expr;
 
 import com.clinnection.wf.lang.DataType;
+import org.json.JSONObject;
 
 public abstract class UnaryExpr extends Expr {
 
@@ -14,5 +15,12 @@ public abstract class UnaryExpr extends Expr {
     public UnaryExpr(DataType dataType, Operation op, Expr rhs) {
         super(dataType, op);
         this.rhs = rhs;
+    }
+
+    @Override
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = super.toParseTree();
+        jsonObject.putOnce("rhs", rhs.toParseTree());
+        return jsonObject;
     }
 }

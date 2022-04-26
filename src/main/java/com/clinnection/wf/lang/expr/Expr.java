@@ -14,6 +14,7 @@ public abstract class Expr {
 
     private static final Map<String, Operation> opMap = new HashMap<String, Operation>(){{
         put("Literal", Operation.Literal);
+        put("Variable", Operation.Variable);
         put("(", Operation.Paren);
         put("-", Operation.Neg);
         put("*", Operation.Mult);
@@ -23,6 +24,7 @@ public abstract class Expr {
 
         put("&&", Operation.And);
         put("||", Operation.Or);
+        put("!", Operation.Not);
 
         put("==", Operation.EQ);
         put("!=", Operation.NE);
@@ -50,6 +52,7 @@ public abstract class Expr {
     enum Operation {
         Invalid,
         Literal,
+        Variable,
         Paren,
         Neg,
         Plus,
@@ -66,6 +69,7 @@ public abstract class Expr {
 
         And,
         Or,
+        Not,
 
         Cast
     }
@@ -88,7 +92,8 @@ public abstract class Expr {
 
     public JSONObject toParseTree() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.putOnce("type", op);
+        jsonObject.putOnce("op", op);
+        jsonObject.putOnce("dataType", getDataType() );
         return jsonObject;
     }
 }

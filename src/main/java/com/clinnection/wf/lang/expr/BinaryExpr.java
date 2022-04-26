@@ -1,6 +1,7 @@
 package com.clinnection.wf.lang.expr;
 
 import com.clinnection.wf.lang.DataType;
+import org.json.JSONObject;
 
 public abstract class BinaryExpr extends Expr {
 
@@ -25,5 +26,13 @@ public abstract class BinaryExpr extends Expr {
 
     public Expr getRhs() {
         return rhs;
+    }
+
+    @Override
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = super.toParseTree();
+        jsonObject.putOnce("lhs", lhs.toParseTree());
+        jsonObject.putOnce("rhs", rhs.toParseTree());
+        return jsonObject;
     }
 }

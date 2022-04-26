@@ -102,6 +102,7 @@ public abstract class Var {
     public JSONObject toParseTree() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.putOnce("type", dataType);
+        jsonObject.putOnce("name", name);
         return jsonObject;
     }
 }
