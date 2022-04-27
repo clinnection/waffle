@@ -13,19 +13,20 @@ block
     ;
 
 stmt
-    : assignment_stmt
+    : assignmentStmt
+    | whileStmt
     ;
 
 decl
-    : decl_type=DECL_BOOLEAN    decl_var=VAR_BOOLEAN
-    | decl_type=DECL_INTEGER    decl_var=VAR_INTEGER
-    | decl_type=DECL_DECIMAL    decl_var=VAR_DECIMAL
-    | decl_type=DECL_STRING     decl_var=VAR_STRING
-    | decl_type=DECL_DATE       decl_var=VAR_DATE
+    : declType=DECL_BOOLEAN    declVar=VAR_BOOLEAN
+    | declType=DECL_INTEGER    declVar=VAR_INTEGER
+    | declType=DECL_DECIMAL    declVar=VAR_DECIMAL
+    | declType=DECL_STRING     declVar=VAR_STRING
+    | declType=DECL_DATE       declVar=VAR_DATE
     ;
 
 
-assignment_stmt
+assignmentStmt
     : id=VAR_BOOLEAN ASSIGN booleanExpr         # assignStmt
     | id=VAR_DECIMAL ASSIGN decimalExpr         # assignStmt
     | id=VAR_INTEGER ASSIGN integerExpr         # assignStmt
