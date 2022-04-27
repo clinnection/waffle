@@ -22,9 +22,15 @@ public class Block {
     public HashMap<String, Var> getVars() { return this.vars; }
     public Var getVar(String name) { return this.vars.get(name); }
 
+    public Stmt currentStmt() {
+        return stmts.get(stmts.size() -1);
+    }
+
     public JSONObject toParseTree() {
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonStmts = new JSONArray();
+
+        // TODO: vars
 
         for (Stmt stmt : stmts) {
             jsonStmts.put(stmt.toParseTree());
