@@ -15,6 +15,7 @@ block
 stmt
     : assignmentStmt
     | whileStmt
+    | ifStmt
     ;
 
 decl
@@ -41,6 +42,22 @@ whileStmt
 
 whileDo
     : DO
+    ;
+
+ifStmt
+    : IF booleanExpr ifThen block elseIfStmt* elseStmt? END IF
+    ;
+
+elseIfStmt
+    : ELSE IF booleanExpr ifThen block
+    ;
+
+elseStmt
+    : ELSE block
+    ;
+
+ifThen
+    : THEN
     ;
 
 booleanExpr
