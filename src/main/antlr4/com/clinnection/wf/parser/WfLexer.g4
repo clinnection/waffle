@@ -56,6 +56,14 @@ GT : '>';
 LE : '<=';
 GE : '>=';
 
+
+WHILE   : 'while';
+DO      : 'do';
+IF      : 'if';
+THEN    : 'then';
+ELSE    : 'else';
+END     : 'end';
+
 //BOOLEAN
 //    : 'true'
 //    | 'false'

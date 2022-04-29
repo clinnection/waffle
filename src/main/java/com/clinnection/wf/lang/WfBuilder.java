@@ -1,8 +1,7 @@
 package com.clinnection.wf.lang;
 
 import com.clinnection.wf.lang.expr.*;
-import com.clinnection.wf.lang.stmt.AssignmentStmt;
-import com.clinnection.wf.lang.stmt.Stmt;
+import com.clinnection.wf.lang.stmt.*;
 import com.clinnection.wf.lang.var.Var;
 import com.clinnection.wf.parser.*;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -13,10 +12,12 @@ public class WfBuilder extends WfParserBaseListener {
 
     private Stack<Expr> exprs;
     private Stack<Block> blocks;
+    private Stack<Stmt> stmts;
 
     public WfBuilder() {
         exprs = new Stack<Expr>();
         blocks = new Stack<Block>();
+        stmts = new Stack<Stmt>();
     }
 
     private Var getVar(String name) {
@@ -168,7 +169,6 @@ public class WfBuilder extends WfParserBaseListener {
     /*
      * String
      */
-
     @Override
     public void exitUnaryStringExpr(WfParser.UnaryStringExprContext ctx) {
         System.out.println("exitUnaryStringExpr: " + ctx.getText());
@@ -216,7 +216,6 @@ public class WfBuilder extends WfParserBaseListener {
     /*
      * Date
      */
-
     @Override
     public void exitUnaryDateExpr(WfParser.UnaryDateExprContext ctx) {
         System.out.println("exitUnaryDateExpr: " + ctx.getText());
@@ -317,5 +316,29 @@ public class WfBuilder extends WfParserBaseListener {
 
         CompareExpr compareExpr = new CompareExpr(op, lhs, rhs);
         exprs.push(compareExpr);
+    }
+
+    /*
+     * While
+     */
+    @Override
+    public void exitWhileDo(WfParser.WhileDoContext ctx) {
+        System.out.println("exitWhileDo: " + ctx.getText());
+
+        WhileStmt whileStmt = new WhileStmt();
+        whileStmt.setExpr(exprs.pop());
+
+        stmts.push(whileStmt);
+        blocks.push(new Block());
+    }
+
+    @Override
+    public void exitWhileStmt(WfParser.WhileStmtContext ctx) {
+        System.out.println("exitWhileStmt: " + ctx.getText());
+
+        WhileStmt whileStmt = (WhileStmt) stmts.pop();
+
+        whileStmt.setBlock(blocks.pop());
+        blocks.peek().addStmt(whileStmt);
     }
 }

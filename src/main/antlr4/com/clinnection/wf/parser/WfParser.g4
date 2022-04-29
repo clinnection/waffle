@@ -35,6 +35,14 @@ assignmentStmt
     | id=VAR_DATE    ASSIGN stringExpr          # assignStmt
     ;
 
+whileStmt
+    : WHILE booleanExpr whileDo block END WHILE
+    ;
+
+whileDo
+    : DO
+    ;
+
 booleanExpr
     : op=OPAR booleanExpr CPAR                          # unaryBooleanExpr
     | op=NOT booleanExpr                                # unaryBooleanExpr
