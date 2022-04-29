@@ -342,5 +342,22 @@ public class WfBuilder extends WfParserBaseListener {
         blocks.peek().addStmt(whileStmt);
     }
 
+    /*
+     * If
+     */
 
+    @Override
+    public void enterIfStmt(WfParser.IfStmtContext ctx) {
+        System.out.println("enterIfStmt: " + ctx.getText());
+
+        stmts.push(new IfStmt());
+    }
+
+    @Override
+    public void exitIfThen(WfParser.IfThenContext ctx) {
+        System.out.println("exitIfThen: " + ctx.getText());
+
+        ExprBlockStmt exprBlockStmt = (ExprBlockStmt) stmts.peek();
+        exprBlockStmt.setExpr(exprs.pop());
+    }
 }
