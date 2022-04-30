@@ -342,22 +342,83 @@ public class WfBuilder extends WfParserBaseListener {
         blocks.peek().addStmt(whileStmt);
     }
 
+    //
+    //  *** IF ***
+    //
+
     /*
      * If
      */
-
     @Override
     public void enterIfStmt(WfParser.IfStmtContext ctx) {
-        System.out.println("enterIfStmt: " + ctx.getText());
+        System.out.println("1 enterIfStmt: " + ctx.getText());
 
         stmts.push(new IfStmt());
+        blocks.push(new Block());
     }
 
     @Override
+    public void exitIfStmt(WfParser.IfStmtContext ctx) {
+        System.out.println("2 exitIfStmt: " + ctx.getText());
+
+        IfStmt ifStmt = (IfStmt) stmts.pop();
+        ifStmt.setBlock(blocks.pop());
+
+        blocks.peek().addStmt(ifStmt);
+    }
+
+    /*
+     * Else If
+     */
+    @Override
+    public void enterElseIfStmt(WfParser.ElseIfStmtContext ctx) {
+        System.out.println("3 enterElseIfStmt: " + ctx.getText());
+
+        stmts.push(new ElseIfStmt());
+        blocks.push(new Block());
+    }
+
+    @Override
+    public void exitElseIfStmt(WfParser.ElseIfStmtContext ctx) {
+        System.out.println("4 exitElseIfStmt: " + ctx.getText());
+
+        ElseIfStmt elseIfStmt = (ElseIfStmt) stmts.pop();
+        elseIfStmt.setBlock(blocks.pop());
+
+        IfStmt ifStmt = (IfStmt) stmts.peek();
+        ifStmt.addElseIfStmts(elseIfStmt);
+    }
+
+    /*
+     * Exit If Then
+     */
+    @Override
     public void exitIfThen(WfParser.IfThenContext ctx) {
-        System.out.println("exitIfThen: " + ctx.getText());
+        System.out.println("5 exitIfThen: " + ctx.getText());
 
         ExprBlockStmt exprBlockStmt = (ExprBlockStmt) stmts.peek();
         exprBlockStmt.setExpr(exprs.pop());
+    }
+
+    /*
+     * Else
+     */
+    @Override
+    public void enterElseStmt(WfParser.ElseStmtContext ctx) {
+        System.out.println("6 enterElseStmt: " + ctx.getText());
+
+        stmts.push(new ElseStmt());
+        blocks.push(new Block());
+    }
+
+    @Override
+    public void exitElseStmt(WfParser.ElseStmtContext ctx) {
+        System.out.println("7 enterElseStmt: " + ctx.getText());
+
+        ElseStmt elseStmt = (ElseStmt) stmts.pop();
+        elseStmt.setBlock(blocks.pop());
+
+        IfStmt ifStmt = (IfStmt) stmts.peek();
+        ifStmt.setElseStmt(elseStmt);
     }
 }

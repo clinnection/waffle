@@ -1,5 +1,8 @@
 package com.clinnection.wf.lang.stmt;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,4 +29,23 @@ public class IfStmt extends ExprBlockStmt {
         this.elseIfStmts.add(elseIfStmt);
     }
 
+    @Override
+    public JSONObject toParseTree() {
+        JSONObject jsonObject = super.toParseTree();
+        JSONArray jsonElseIf = new JSONArray();
+
+        if (elseStmt != null) {
+            jsonObject.putOnce("else", elseStmt.toParseTree());
+        } else {
+            jsonObject.putOnce("else", new JSONObject());
+        }
+
+        for (ElseIfStmt elseIfStmt : elseIfStmts) {
+            jsonElseIf.put(elseIfStmt.toParseTree());
+        }
+
+        jsonObject.putOnce("elseIfStmts", jsonElseIf);
+
+        return jsonObject;
+    }
 }
