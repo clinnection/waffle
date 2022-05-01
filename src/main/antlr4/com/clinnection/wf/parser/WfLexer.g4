@@ -21,17 +21,13 @@ tokens {
         put("date",    WfLexer.VAR_DATE);
     }};
 
-//    public Map<String, Integer> types.peek() = new HashMap<String,Integer>();
-
     public Stack<Map<String, Integer>> types;
 
     public void startScope() {
         types.push(new HashMap<String, Integer>());
-        System.out.println("+ Type size: " + types.size());
     }
     public void endScope() {
         types.pop();
-        System.out.println("- Type size: " + types.size());
     }
 
     public String varType = null;
@@ -99,15 +95,16 @@ IDENTIFIER
         System.out.println("IDENTIFIER: " + name);
 
         if (types == null) {
-            System.err.println("types is null");
+            System.out.println("Initializing types");
             types = new Stack<>();
             startScope();
-//            types.push(new HashMap<String, Integer>());
-        } else {
-            System.out.println("types is NOT NULL");
         }
 
         if (varType != null) {
+            if (types.peek().containsKey(name)) {
+                throw new RuntimeException(name + ": redeclared");
+            }
+
             System.out.println("varType: " + varType);
             if (declTypeMap.containsKey(varType)) {
                 int type = declTypeMap.get(varType);
@@ -118,7 +115,7 @@ IDENTIFIER
                 throw new RuntimeException("I'm so confused");
             }
         } else {
-            System.out.println("varType is null");
+            System.out.println("varType is null, looking for type");
 
             int type = -1;
 
@@ -126,6 +123,7 @@ IDENTIFIER
                 if (types.get(i).containsKey(name)) {
                     type = types.get(i).get(name);
                     System.out.println("Identifier type:" + type);
+                    break;
                 }
             }
 
@@ -142,18 +140,3 @@ IDENTIFIER
 SPACE
     : [ \t\n\r] -> skip
     ;
-
-
-//    private Var getVar(String name) {
-//        Var v = null;
-//        for (int i = blocks.size() - 1; i >= 0; i--) {
-//            v = blocks.get(i).getVar(name);
-//            if (v != null) {
-//                break;
-//            }
-//        }
-//        if (v == null) {
-//            throw new RuntimeException(name + ": not found");
-//        }
-//        return v;
-//    }
